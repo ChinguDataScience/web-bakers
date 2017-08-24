@@ -61,6 +61,7 @@ app.set('view engine', 'ejs');
 
 //test db to see if Mongoose is working with Mongo
 //IDEA SCHEMA
+//=============================
 var ideaSchema = new mongoose.Schema({
 	title: String,
   description: String,
@@ -70,18 +71,30 @@ var ideaSchema = new mongoose.Schema({
 
 var Idea = mongoose.model("Idea", ideaSchema);
 
-// Idea.create(
-// 	{
-// 			title: "Meditation yoga project",
-// 			description: "An app where you can find people who like both meditation and yoga."
-// 	}, function (err, idea){
-// 		if(err){
-// 			console.log(err);
-// 		} else {
-// 			console.log("YOU DID IT! Idea created! :D");
-// 			console.log(idea);
-// 		}
-// 	}
+//USER/IDEATOR SCHEMA
+//===============================
+var ideatorSchema = new mongoose.Schema({
+  username: String,
+  email: String,
+  password: String
+});
+
+var Ideator = mongoose.model("Ideator", ideatorSchema);
+
+// Ideator.create(
+//   {
+//     username: "GandalfTheGray",
+//     email: "gandalf@gmail.com",
+//     password: "password123"
+//   },
+//   function(err, ideator) {
+//     if (err) {
+//       console.log(err);
+//     } else {
+//       console.log("New User added to DB:");
+//       console.log(ideator);
+//     }
+//   }
 // );
 
 // ----------------------------------------------------------
@@ -99,10 +112,10 @@ app.get('/', function(req, res) {
   }); 
 });
 
-// Projects
-app.get('/projects', function(req, res) {
-  res.render('projects');
-});
+// Projects - on hold for now
+// app.get('/projects', function(req, res) {
+//   res.render('projects');
+// });
 
 app.post('/ideas', function(req, res) {
   // Get data from form and add to db
@@ -110,6 +123,7 @@ app.post('/ideas', function(req, res) {
   var description = req.body.ideaDescription;
   var newIdea = { title: title, description: description, author: 'Anonymous', dateSubmitted: 'Just Now'};
   Idea.create(newIdea, function (err, newlyCreated) {
+    //TODO: add data validation before updating db
     //error check
     if (err) {
       // TODO: Add message to user about error
